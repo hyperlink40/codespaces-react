@@ -1,6 +1,9 @@
 import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import PostLandingPage from './PostLandingPage';
 
-function App() {
+function LandingPage() {
   return (
     <div className="App">
       <header className="App-header">
@@ -23,6 +26,28 @@ function App() {
         </p>
       </header>
     </div>
+  );
+}
+
+function App() {
+  // Simple hardcoded admin flag
+  const [isAdmin] = useState(true);
+
+  return (
+    <Router>
+      <nav>
+        <Link to="/">Home</Link> |{' '}
+        {isAdmin && <Link to="/post-landing">Post Landing</Link>}
+      </nav>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        {isAdmin ? (
+          <Route path="/post-landing" element={<PostLandingPage />} />
+        ) : (
+          <Route path="/post-landing" element={<Navigate to="/" replace />} />
+        )}
+      </Routes>
+    </Router>
   );
 }
 
